@@ -25,6 +25,7 @@ Edge detection is an essential component in many computer vision problems.
 
 ## Management Plan
 There are some separated work:
+
 1. Visualization module: show the image and the object polygon.
 2. Edge detection algorithm: mainly based on the Canny edge detector.
 3. Unsupervised learning method: such as k-means and SVM, generate a pipline for analysis satellite images.
