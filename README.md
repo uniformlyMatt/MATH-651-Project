@@ -2,7 +2,7 @@
 Place for our project.
 
 ## Introduction
-With the development of sciences and technology, we have a growing number of high resolution satellite images.
+Advances in satellite imagery have provided a wealth of high-resolution, multi-band images.
 This help us get a better understanding of the Earth.
 Labelling features such us water, farms, roadways, and artificial structures in satellite images has been became an important task.
 At present, this labelling work is still mainly done by hand and semi-automated algorithms.
