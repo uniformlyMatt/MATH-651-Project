@@ -26,7 +26,7 @@ The images for same building in different meteorological conditions and shooting
 In order to solve this problem, more images under different situations in the training set will be needed.
 However, this image data will be very hard to achieve because of the limitations of satellite remote sensing.
 
-![](proposal_1.svg "Figure 1: Satellite Image of Building")
+<!-- ![](proposal_1.svg "Figure 1: Satellite Image of Building") -->
 
 Above figure shows the datasets we have.
 Left figure is a piece of three band satellite image, several buildings has been shown in this figure.
@@ -39,10 +39,10 @@ Then, we will apply convolutional neural network to identify buildings in the im
 
 ## Edge detection algorithms
 Image edge plays an important role in pattern recognition.
-Edge detection is an essential component in many computer vision problems.
+<!-- Edge detection is an essential component in many computer vision problems.
 Suppose $f(x_1,x_2)$ is an image, the gradient vector is
 $$∇ f = \left( \frac{∂ f}{∂ x_1}, \frac{∂ f}{∂ x_2} \right).$$
-Let $x = y + λ ∇ f(y)$ and $|λ|$ is small enough, $y$ is an edge point if $|∇ f(x)|$ is locally maximum.
+Let $x = y + λ ∇ f(y)$ and $|λ|$ is small enough, $y$ is an edge point if $|∇ f(x)|$ is locally maximum. -->
 Canny Edge Detection algorithm is one of the most popular edge detection algorithm and we will apply that algorithm on the satellite images.
 We may not only analysis image edges in greyscale, but also consider working on RGB colour scale which could be better for describing feature of buildings.
 
