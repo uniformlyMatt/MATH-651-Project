@@ -1,18 +1,8 @@
-'''
-Created on Mar 10, 2017
-
-@author: Matt
-'''
-
-from collections import defaultdict
-import sys
-
 from PIL import Image
 import cv2
 import pandas as pd
 import numpy as np
 import tifffile as tiff
-from shapely.geometry import MultiPolygon, Polygon
 import shapely.wkt
 import shapely.affinity
 import matplotlib.pyplot
@@ -44,7 +34,7 @@ def get_scalars():
 
 xscaler, yscaler = get_scalars()
 
-poly_scaled=shapely.affinity.scale(sMultiPolygon,xfact=xscaler,yfact=yscaler,origin=(0,0,0))
+poly_scaled = shapely.affinity.scale(sMultiPolygon,xfact=xscaler,yfact=yscaler,origin=(0,0,0))
 
 def mask_for_polygons(polygons):
     img_mask = np.zeros(im_size, np.uint8)
@@ -70,8 +60,6 @@ def scale_percentile(matrix):
     matrix = np.reshape(matrix, [w, h, d])
     matrix = matrix.clip(0, 1)
     return matrix
-
-# [2900:3200,2000:2300]
 
 tiff.imshow(255 * scale_percentile(im_rgb))
 matplotlib.pyplot.show()
