@@ -1,9 +1,5 @@
 #! /usr/bin/env python3
-'''
-Created on Mar 22, 2017
 
-@author: Matt
-'''
 ##########################################################
 # This code takes in grayscale edge-detected images and  #
 # returns binary masked objects for use in validating    #
