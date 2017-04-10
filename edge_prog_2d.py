@@ -1,19 +1,51 @@
+""" Document for edge_prog_2d.py
+
+This module is for image edge detection with 2 dimensional wavelet transform.
+
+If you have any problem please contact: da.li1@ucalgary.ca.
+"""
 import numpy as np
 from scipy import signal
 
 def gaus(N, sigma, scale):
+    """ The Gaussian function.
+    Input:
+        N: the length of signal.
+        sigma: parameter in Gaussian function.
+        scale: scale used in continuous wavelet transform.
+    Output:
+        g: Gaussian function.
+        t: time.
+    """
     t = np.linspace(-5,5,N)
     g = 1/np.sqrt(scale) * 1 / (sigma * np.sqrt(2*np.pi)) * np.exp(-1/2 * ((-1*t/scale)/sigma)**2)
     g = g / np.sqrt(np.sum(g*g))
     return g, t
 
 def gaus1(N, sigma, scale):
+    """ The first derivative of Gaussian.
+    Input:
+        N: the length of signal.
+        sigma: parameter in Gaussian function.
+        scale: scale used in continuous wavelet transform.
+    Output:
+        g: The first derivative of Gaussian.
+        t: time.
+    """
     t = np.linspace(-5,5,N)
     g = -1 * 1/np.sqrt(scale) * 1/(sigma**3*np.sqrt(2*np.pi)) * (-1*t/scale) * np.exp(-1/2 * (-1*(t/scale)/sigma)**2)
     g = g / np.sqrt(np.sum(g*g))
     return g, t
 
 def cwt_2d(I, scale):
+    """ 1 dimensional continuous wavelet transform function with first derivative of Gaussian as the wavelet.
+    Input:
+        I: input image, should be size N by N.
+        scale: scale number in CWT.
+    Output:
+        H: CWT in horizontal
+        V: CWT in vertical
+    """
     N = I.shape[0]
 
     H = np.zeros([N,N])
@@ -28,6 +60,15 @@ def cwt_2d(I, scale):
     return H, V
 
 def wtmm_2d(H, V):
+    """ Find the position of wavelet transform modulus maximum of an image.
+    Input:
+        H: CWT in horizontal
+        V: CWT in vertical
+    Output:
+        M: wavelet modulus.
+        A: Angular.
+        MM: wavelet transform modulus maximum.
+    """
     M = np.sqrt(H**2 + V**2)
     N = M.shape[1]
 
@@ -56,7 +97,6 @@ def wtmm_2d(H, V):
                 p1 = M[i+1,j+1]; p2 = M[i-1,j-1]
                 if (p-p1)*(p-p2) >= 0:
                     MM[i,j] = p;
-#             elif (A[i,j]>=-ind2) & (A[i,j]<=-ind1):
             elif (A[i,j]>-ind2) & (A[i,j]<-ind1):
                 p1 = M[i+1,j-1]; p2 = M[i-1,j+1]
                 if (p-p1)*(p-p2) >= 0:
@@ -65,6 +105,13 @@ def wtmm_2d(H, V):
     return M, A, MM
 
 def cal_multi_edge(I, scale):
+    """ Calculate for edges in all scales. This is a component of calculating Lipschitz exponent.
+    Input:
+        I: image.
+        scale: different scales.
+    Output:
+        E: multiple edge file, a ndarray in size of N by N by len(scale).
+    """
     E = np.ndarray([I.shape[0],I.shape[1],scale.shape[0]])
     for i in range(scale.shape[0]):
         H, V = cwt_2d(I, scale[i])
@@ -72,6 +119,17 @@ def cal_multi_edge(I, scale):
     return E
 
 def LE_2d(E, scale, th):
+    """ Calculate Lipschitz exponent in 2 dimension.
+    Input:
+        E: multiple edge file.
+        scale: different scales same as 'cal_multi_edge(I, scale):'.
+        th: threshold for Lipschitz exponent.
+    Output:
+        alpha: Lipschitz exponent.
+        ind: position of the singular point.
+        val1: WTMM propagation line log_2(C) for each singular point.
+        scale1: scale in log_2.
+    """
     I = E[:,:,0]
 
     ind = np.where(np.abs(I) > th * np.max(I))
@@ -147,6 +205,17 @@ def LE_2d(E, scale, th):
     return alpha, ind, val1, scale1
 
 def ex_edge_by_Lip(E, alpha, index, th):
+    """ Extract edge file through image.
+    Input:
+        E: multiple edge file.
+        alpha: Lipschitz exponent.
+        index: position of the singular point.
+        th: threshold for Lipschitz exponent.
+    Output:
+        Lip: image file which edge value is Lipschitz exponent.
+        E_one: image file which edge value is 1.
+        E_val: image file which edge value is image value itself. This is for future amplitude threshold.
+    """
     II = E[:,:,0]
     A = np.zeros(II.shape)
     Lip = np.zeros(II.shape)
